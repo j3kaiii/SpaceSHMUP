@@ -21,6 +21,9 @@ public class Hero : MonoBehaviour
 
     private GameObject lastTriggerGo = null;
 
+    public delegate void WeaponFireDelegate();
+    public WeaponFireDelegate fireDelegate;
+
     private void Awake()
     {
         if (S == null)
@@ -30,6 +33,8 @@ public class Hero : MonoBehaviour
         {
             Debug.Log("Second Hero.S found");
         }
+
+        fireDelegate += TempFire;
     }
     
     void Update()
@@ -47,9 +52,14 @@ public class Hero : MonoBehaviour
         // наклоны
         transform.rotation = Quaternion.Euler(yAxis * pitchMult, xAxis * rollMult, 0);
 
-        if (Input.GetKeyDown(KeyCode.Space))
+       /* if (Input.GetKeyDown(KeyCode.Space))
         {
             TempFire();
+        }*/
+
+        if (Input.GetAxis("Jump") == 1 && fireDelegate != null)
+        {
+            fireDelegate();
         }
     }
 
@@ -58,7 +68,12 @@ public class Hero : MonoBehaviour
         GameObject projGo = Instantiate<GameObject>(projectilePrefab);
         projGo.transform.position = transform.position;
         Rigidbody rb = projGo.GetComponent<Rigidbody>();
-        rb.velocity = Vector3.up * projectileSpeed;
+        //rb.velocity = Vector3.up * projectileSpeed;
+
+        Projectile proj = projGo.GetComponent<Projectile>();
+        proj.type = WeaponType.blaster;
+        float tSpeed = Main.GetWeaponDefenition(proj.type).velocity;
+        rb.velocity = Vector3.up * tSpeed;
     }
 
     private void OnTriggerEnter(Collider other)

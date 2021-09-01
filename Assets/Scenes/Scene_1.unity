@@ -737,9 +737,37 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   prefabEnemies:
-  - {fileID: 9193284765281726005, guid: 66226a122341c464da95b129b84c7143, type: 3}
+  - {fileID: 1972296603961291117, guid: f0afa290685ca0d4b9bba6a335c2fdaa, type: 3}
   enemySpawnPerSecond: 0.5
   enemyDefaulPadding: 1.5
+  weaponDefenitions:
+  - type: 1
+    letter: B
+    color: {r: 1, g: 1, b: 1, a: 1}
+    projectilePrefub: {fileID: 3425248039478275053, guid: 1da518aa95da6a7409e01de17bf19afc, type: 3}
+    projectileColor: {r: 1, g: 1, b: 1, a: 1}
+    damageOnHit: 1
+    continiousDamage: 0
+    delayBetweenShots: 0.2
+    velocity: 50
+  - type: 2
+    letter: S
+    color: {r: 1, g: 0, b: 0, a: 1}
+    projectilePrefub: {fileID: 3425248039478275053, guid: 1da518aa95da6a7409e01de17bf19afc, type: 3}
+    projectileColor: {r: 1, g: 0, b: 0, a: 1}
+    damageOnHit: 1
+    continiousDamage: 0
+    delayBetweenShots: 0.4
+    velocity: 50
+  - type: 6
+    letter: O
+    color: {r: 0, g: 1, b: 0, a: 1}
+    projectilePrefub: {fileID: 0}
+    projectileColor: {r: 0, g: 1, b: 0, a: 1}
+    damageOnHit: 0
+    continiousDamage: 0
+    delayBetweenShots: 0
+    velocity: 0
 --- !u!114 &963194230
 MonoBehaviour:
   m_ObjectHideFlags: 0
