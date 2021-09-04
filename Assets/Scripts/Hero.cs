@@ -14,6 +14,7 @@ public class Hero : MonoBehaviour
     public float gameRestartDelay = 2f;
     public GameObject projectilePrefab;
     public float projectileSpeed = 40f;
+    public Weapon[] weapons;
 
     [Header("Set Dinamically")]
     [SerializeField]
@@ -94,6 +95,9 @@ public class Hero : MonoBehaviour
         {
             shieldLevel--;
             Destroy(go);
+        } else if (go.tag == "PowerUp")
+        {
+            AbsorbPowerUp(go);
         } else
         {
             print("Not an anemy " + go.name);
@@ -112,5 +116,15 @@ public class Hero : MonoBehaviour
             if (value < 0) Destroy(this.gameObject);
             Main.S.DelayedRestart(gameRestartDelay);
         }
+    }
+
+    public void AbsorbPowerUp( GameObject go)
+    {
+        PowerUp pu = go.GetComponent<PowerUp>();
+        switch (pu.type)
+        {
+
+        }
+        pu.AbsorbedDy(this.gameObject);
     }
 }
