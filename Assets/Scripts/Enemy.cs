@@ -10,12 +10,27 @@ public class Enemy : MonoBehaviour
     public float fireRate = 0.3f;
     public float health = 10f;
     public int score = 100;
+    public float showDamageDuration = 0.1f;
+
+    [Header("Set Dinamically: Enemy")]
+    public Color[] originalColors;
+    public Material[] materials;
+    public bool showingDamage = false;
+    public float damageDoneTime;
+    public bool notifiedOfDestruction = false;
 
     public BoundsCheck bndCheck;
 
     private void Awake()
     {
         bndCheck = GetComponent<BoundsCheck>();
+
+        materials = Utils.GetAllMaterials(gameObject);
+        originalColors = new Color[materials.Length];
+        for (int i = 0; i < materials.Length; i++)
+        {
+            originalColors[i] = materials[i].color;
+        }
     }
 
     public Vector3 pos
@@ -35,6 +50,10 @@ public class Enemy : MonoBehaviour
     {
         Move();
 
+        if (showingDamage && Time.time > damageDoneTime) {
+            UnShowDamage(); 
+        }
+
         if (bndCheck != null && bndCheck.offDown)
         {
             Destroy(gameObject);
@@ -50,14 +69,41 @@ public class Enemy : MonoBehaviour
 
     private void OnCollisionEnter(Collision coll)
     {
-        GameObject collGo = coll.gameObject;
-        if (collGo.tag == "ProjectileHero")
+        GameObject other = coll.gameObject;
+        switch (other.tag)
         {
-            Destroy(collGo);
-            Destroy(gameObject);
-        } else
-        {
-            print("Hit by non-projectileHero " + collGo.name);
+            case "ProjectileHero":
+                Projectile p = other.GetComponent<Projectile>();
+                if (!bndCheck.isOnScreen)
+                {
+                    Destroy(other);
+                    break;
+                }
+                ShowDamage();
+                health -= Main.GetWeaponDefenition(p.type).damageOnHit;
+                if (health <= 0) Destroy(this.gameObject);
+                Destroy(other);
+                break;
+
+            default:
+                print("Enemy hit by non-ProjectileHero: " + other.name);
+                break;
         }
+    }
+
+    void ShowDamage()
+    {
+        foreach (Material m in materials) m.color = Color.red;
+        showingDamage = true;
+        damageDoneTime = Time.time + showDamageDuration;
+    }
+
+    void UnShowDamage()
+    {
+        for (int i = 0; i < materials.Length; i++)
+        {
+            materials[i].color = originalColors[i];
+        }
+        showingDamage = false;
     }
 }

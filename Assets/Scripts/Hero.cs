@@ -34,7 +34,7 @@ public class Hero : MonoBehaviour
             Debug.Log("Second Hero.S found");
         }
 
-        fireDelegate += TempFire;
+        //fireDelegate += TempFire;
     }
     
     void Update()
