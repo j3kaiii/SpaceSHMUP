@@ -79,7 +79,6 @@ public class Hero : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        print("Got collision with " + other.name);
         Transform rootT = other.gameObject.transform.root;
         GameObject go = rootT.gameObject;
         print("Get " + go.name);
@@ -112,9 +111,12 @@ public class Hero : MonoBehaviour
         }
         set
         {
-            _shieldLevel = Mathf.Min(value, 4);
-            if (value < 0) Destroy(this.gameObject);
-            Main.S.DelayedRestart(gameRestartDelay);
+            _shieldLevel = value;
+            if (value < 0)
+            {
+                Destroy(this.gameObject);
+                Main.S.DelayedRestart(gameRestartDelay);
+            }
         }
     }
 
@@ -123,8 +125,42 @@ public class Hero : MonoBehaviour
         PowerUp pu = go.GetComponent<PowerUp>();
         switch (pu.type)
         {
+            case WeaponType.shield:
+                shieldLevel++;
+                break;
 
+            default:
+                if (pu.type == weapons[0].type)
+                {
+                    Weapon w = GetEmptyWeaponSlot();
+                    if (w != null)
+                    {
+                        w.SetType(pu.type);
+                    } else
+                    {
+                        ClearWeapons();
+                        weapons[0].SetType(pu.type);
+                    }
+                }
+                break;
         }
         pu.AbsorbedDy(this.gameObject);
+    }
+
+    Weapon GetEmptyWeaponSlot()
+    {
+        for (int i = 0; i < weapons.Length; i++)
+        {
+            if (weapons[i].type == WeaponType.none)
+            {
+                return (weapons[i]);
+            }
+        }
+        return null;
+    }
+
+    void ClearWeapons()
+    {
+        foreach (Weapon w in weapons) w.SetType(WeaponType.none);
     }
 }
