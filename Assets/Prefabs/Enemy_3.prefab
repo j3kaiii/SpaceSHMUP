@@ -64,6 +64,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0fa5df16086d384a85d644ba4938bd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  speed: 10
+  fireRate: 0.3
+  health: 10
+  score: 100
+  showDamageDuration: 0.1
+  powerUpDropChance: 0.75
+  originalColors: []
+  materials: []
+  showingDamage: 0
+  damageDoneTime: 0
+  notifiedOfDestruction: 0
+  bndCheck: {fileID: 0}
+  lifeTime: 5
+  points: []
+  birthTime: 0
 --- !u!114 &9104606882793449972
 MonoBehaviour:
   m_ObjectHideFlags: 0
